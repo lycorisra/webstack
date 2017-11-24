@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>jQCloud Example</title>
+    <meta charset="utf-8" />
+    <style type="text/css">
+        #example span.vertical {
+            -webkit-writing-mode: vertical-rl;
+            writing-mode: tb-rl;
+        }
+    </style>
+    <link rel="stylesheet" type="text/css" href="../jqCloud/jqcloud.css" />
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="../jqCloud/jqcloud-1.0.4.min.js"></script>
+    <script type="text/javascript" src="../jqCloud/data_some.js"></script>
+    <script type="text/javascript">
+        /*!
+         * Create an array of word objects, each representing a word in the cloud
+         */
+        // var word_array = [
+        //     {text: "Lorem", weight: 15},
+        //     {text: "Ipsum", weight: 9, link: "http://jquery.com/"},
+        //     {text: "Dolor", weight: 6, html: {title: "I can haz any html attribute"}},
+        //     {text: "Sit", weight: 7},
+        //     {text: "Amet", weight: 5}
+        //     // ...as many words as you want
+        // ];
+        var text_data = data_json.words;
+
+        $(function () {
+            // When DOM is ready, select the container element and call the jQCloud method, passing the array of words as the first argument.
+            // $("#example").jQCloud(text_data, {
+            //     delayedMode: true
+            // });
+            var _example = $("#example");
+
+            //两种效果切换
+            var _n = -1;
+
+            //每次词汇切换效果
+            changeWords();
+            function changeWords() {
+                var _index = Math.floor(Math.random() * (text_data.length - 0) + 0);
+                _example.html('');
+                _n++;
+                if (_n % 3 === 1) {
+                    var data = changeSize(text_data[_index]);
+                } else {
+                    var data = changeDirection(text_data[_index]);
+                }
+                // console.log(data);
+                reloadData(data);
+
+                setTimeout(changeWords, 3000);
+            }
+
+            //加载数据
+            function reloadData(data) {
+                _example.jQCloud(data, {
+                    delayedMode: true
+                });
+            }
+
+            //改变词汇的大小函数
+            function changeSize(data) {
+                var dataLen = data.length;
+                for (var i = 0; i < dataLen; i += 3) {
+                    console.log(i);
+                    var _weight = data[i]['weight'];
+                    if (_weight >= 300) {
+                        _weight = 80;
+                    }
+                    console.log(_weight);
+                    data[i]['weight'] = _weight * 1 + 100 - i;
+                };
+                return data;
+            }
+            //改变词汇的方向
+            function changeDirection(data) {
+                var dataLen = data.length;
+                for (var i = 0; i < dataLen; i += 3) {
+                    data[i]['html'] = { "class": "vertical" };
+                };
+                return data;
+            }
+
+
+        });
+    </script>
+</head>
+
+<body>
+    <a style="display:block" href="javascript:void(0)" onclick="history.go(-1)">返回</a>
+    <!-- You should explicitly specify the dimensions of the container element -->
+    <div id="example" style="width: 1000px; height: 1000px;"></div>
+</body>
+
+</html>

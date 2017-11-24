@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<title>tagCanvas</title>
+	<script src="../tagCanvas/tagcanvas.js"></script>
+	<style type="text/css">
+		#tags {
+			display: none;
+		}
+	</style>
+</head>
+
+<body>
+	<a style="display:block" href="javascript:void(0)" onclick="history.go(-1)">返回</a>
+	<h1>TagCanvas example page</h1>
+	<div id="myCanvasContainer">
+		<canvas width="600" height="400" id="myCanvas">
+			<p>Anything in here will be replaced on browsers that support the canvas element</p>
+		</canvas>
+	</div>
+	<div id="tags">
+		<ul>
+			<li>
+				<a href="#" target="_blank">Google</a>
+			</li>
+			<li>
+				<a href="#">Fish</a>
+			</li>
+			<li>
+				<a href="#">Chips</a>
+			</li>
+			<li>
+				<a href="#">Salt</a>
+			</li>
+			<li>
+				<a href="#">Vinegar</a>
+			</li>
+			<li>
+				<a href="#" target="_blank">Google</a>
+			</li>
+			<li>
+				<a href="#">Fish</a>
+			</li>
+			<li>
+				<a href="#">Chips</a>
+			</li>
+			<li>
+				<a href="#">Salt</a>
+			</li>
+			<li>
+				<a href="#">Vinegar</a>
+			</li>
+			<li>
+				<a href="#" target="_blank">Google</a>
+			</li>
+			<li>
+				<a href="#">Fish</a>
+			</li>
+			<li>
+				<a href="#">Chips</a>
+			</li>
+			<li>
+				<a href="#">Salt</a>
+			</li>
+			<li>
+				<a href="#">Vinegar</a>
+			</li>
+			<li>
+				<a href="#" target="_blank">Google</a>
+			</li>
+			<li>
+				<a href="#">Fish</a>
+			</li>
+			<li>
+				<a href="#">Chips</a>
+			</li>
+			<li>
+				<a href="#">Salt</a>
+			</li>
+			<li>
+				<a href="#">Vinegar</a>
+			</li>
+			<li>
+				<a href="#" target="_blank">Google</a>
+			</li>
+			<li>
+				<a href="#">Fish</a>
+			</li>
+			<li>
+				<a href="#">Chips</a>
+			</li>
+			<li>
+				<a href="#">Salt</a>
+			</li>
+			<li>
+				<a href="#">Vinegar</a>
+			</li>
+		</ul>
+	</div>
+
+	<script type="text/javascript">
+		window.onload = function () {
+			try {
+				TagCanvas.Start('myCanvas', 'tags', {
+					animTiming: "Linear",
+					textFont: "Microsoft YaHei,Arial, Helvetica, sans-serif",
+					maxSpeed: .03,
+					minSpeed: .01,
+					textColour: "#99ccee",
+					textHeight: 20,
+					outlineMethod: "colour",
+					fadeIn: 800,
+					outlineColour: "#039",
+					outlineOffset: 0,
+					depth: .1,
+					minBrightness: .2,
+					wheelZoom: !1,
+					reverse: !1,
+					shadowBlur: 2,
+					shuffleTags: !0,
+					shadowOffset: [1, 1],
+					outlineColour: "#ffffff",
+					stretchX: 1.7,
+					initial: [0, .1],
+					clickToFront: 1e3,
+					zoom: .85
+					// textColour: '#ff0000',
+					// outlineColour: '#ff00ff',
+					// depth: 0.8,
+					// maxSpeed: 0.03,
+					// shape: 'sphere',
+					// weight: true,
+					// weightMode: 'both',
+					// initial: [0.8,-0.2]
+				});
+			} catch (e) {
+				// something went wrong, hide the canvas container
+				document.getElementById('myCanvasContainer').style.display = 'none';
+			}
+		};
+	</script>
+</body>
+
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>echarts图表demo</title>
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
+    <!-- <script src="https://cdn.bootcss.com/echarts/3.7.2/echarts-en.min.js"></script> -->
+    <script src="https://cdn.bootcss.com/echarts/3.2.3/echarts.js"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>
+    <script src="data/data01.js"></script>
+    <script src="data/data02.js"></script>
+    <script src="data/data03.js"></script>
+    <script src="data/data04.js"></script>
+    <script src="data/data05.js"></script>
+    <script src="data/data06.js"></script>
+    <script src="data/data07.js"></script>
+    <script src="data/data08.js"></script>
+    <script src="data/shanghai.js"></script>
+
+    <style>
+        .echart-bar>div {
+            display: inline-block;
+            width: 45%;
+            height: 500px;
+            padding: 15px;
+        }
+
+        #demo05 {
+            width: 80%;
+            height: 800px;
+        }
+
+        #info-flow {
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #000014;
+        }
+    </style>
+</head>
+
+<body>
+    <a style="display:block" href="javascript:void(0)" onclick="history.go(-1)">返回</a>
+    <div id="info-flow"></div>
+    <div class="echart-bar">
+        <div id="demo01"></div>
+        <div id="demo02"></div>
+        <div id="demo04"></div>
+        <div id="demo06"></div>
+        <div id="demo05"></div>
+        <div id="demo07"></div>
+        <div id="demo08"></div>
+    </div>
+
+    <script>
+        // 横向柱形图
+        var chart01 = echarts.init(document.getElementById('demo01'), "dark");
+        chart01.setOption(data01);
+
+        setInterval(function () {
+            for (var t = 0; t < data01.series[0].data.length; t++) {
+                data01.series[0].data[t] += Math.floor(2 * Math.random());
+            }
+            chart01.setOption(data01, !0)
+        }, 1000)
+
+        // 横向柱形图（分段）
+        var chart02 = echarts.init(document.getElementById('demo02'), "dark");
+        chart02.setOption(data02);
+
+        setInterval(function () {
+            var array = [],
+                items = [],
+                data = data02.series[0].data;
+            for (var i = 0; i < data.length; i++) {
+                array.push(Math.floor((Math.random() - 0.3) * 5));
+            }
+            array.sort(function () {
+                return 0.5 - Math.random();
+            })
+            for (var i = 0; i < data.length; i++) {
+                data02.series[0].data[i] += array[i];
+                data02.series[1].data[i] += array[i];
+
+                items.push({
+                    x1: data02.series[0].data[i],
+                    x2: data02.series[1].data[i],
+                    y: data02.yAxis[0].data[i]
+                });
+            }
+            items.sort(function (a, b) {
+                return a.x1 + a.x2 - b.x1 - b.x2;
+            })
+            var yAxis = [], x1 = [], x2 = [];
+            items.map(function (e, i) {
+                yAxis.push(e.y);
+                x1.push(e.x1);
+                x2.push(e.x2);
+            })
+            data02.series[0].data = x1;
+            data02.series[1].data = x2;
+            data02.yAxis[0].data = yAxis;
+            chart02.setOption(data02, !0)
+        }, 1000);
+
+
+        // 纵向柱形图
+        var chart04 = echarts.init(document.getElementById('demo04'), "dark");
+        chart04.setOption(data04);
+        setInterval(function () {
+            for (var e = data04.xAxis.data, t = data04.series[0].data, a = data04.series[1].data, r = t.length, n = new Date, i = 1; i > 0; i--) {
+                var s = new Date(n += 1e3);
+                e.push([s.getMonth() + 1 + "/" + s.getDate() + "  " + s.getHours() + ":" + s.getMinutes() + ":" + s.getSeconds()]);
+                var l = Math.round(20 * (Math.random() - .5) + t[r - i]);
+                l = l < 0 ? 0 : l,
+                    t.push(l),
+                    a.push(l * Math.random() * .5)
+            }
+            t.splice(0, 1),
+                a.splice(0, 1),
+                e.splice(0, 1),
+                chart04.setOption(data04, !0)
+        }, 1e3)
+
+        // 飞线图
+        var chart05 = echarts.init(document.getElementById('demo05'), "dark");
+        chart05.setOption(data05);
+        var infoFlowData = [[[[760, 840], [380, 840]]], [[[760, 740], [760, 440], [280, 440]]], [[[760, 740], [760, 440], [380, 440], [380, 180], [280, 180]]], [[[980, 540], [1450, 540], [1450, 940], [1650, 940]]], [[[980, 540], [1450, 540], [1450, 640], [1650, 640]]], [[[980, 540], [1450, 540], [1450, 380], [1650, 380]]], [[[980, 540], [1450, 540], [1450, 80], [1650, 80]]]];
+        makeInfoFlowLine(infoFlowData);
+
+
+        // 饼状图
+        var chart06 = echarts.init(document.getElementById('demo06'), "dark");
+        chart06.setOption(data06);
+
+        setInterval(function () {
+            // data06.series[0].data[0].value;
+            data06.series[0].data[0].value += (Math.random() - .5) * 5,
+                data06.series[0].data[0].value > 100 && (data06.series[0].data[0].value = 75),
+                data06.series[0].data[0].value < 0 && (data06.series[0].data[0].value = 25),
+                data06.series[0].data[1].value = 100 - data06.series[0].data[0].value,
+                chart06.setOption(data06, !0)
+        }, 1000);
+
+        // 散点图
+        var chart07 = echarts.init(document.getElementById('demo07'), "dark");
+        chart07.setOption(data07);
+
+        setInterval(function () {
+            var series = data07.series;
+            series.forEach(function (item, index) {
+                var data = item.data;
+                data.forEach(function (e, i) {
+                    e[1] = e[1] + Math.floor(Math.random() * 5) * (0.5 - Math.random() < 0 ? -1 : 1);
+                })
+            })
+            chart07.setOption(data07);
+        }, 1000)
+
+        // 区域图
+        var chart08 = echarts.init(document.getElementById('demo08'), "dark");
+        chart08.setOption(data08);
+
+        function makeInfoFlowLine(t) {
+            var e = echarts.init(document.getElementById("info-flow"), "dark"),
+                i = [];
+            t.forEach(function (t, e) {
+                i.push({
+                    type: "lines",
+                    animation: !1,
+                    coordinateSystem: "cartesian2d",
+                    polyline: !0,
+                    effect: {
+                        show: !0,
+                        period: 4,
+                        trailLength: .05,
+                        symbolSize: 10,
+                        color: "rgba(23,134,217,0.69)"
+                    },
+                    lineStyle: {
+                        normal: { width: 0 }
+                    },
+                    data: t
+                })
+            });
+            var n = {
+                backgroundColor: "transparent",
+                grid: {
+                    left: 0,
+                    top: 0,
+                    bottom: 0,
+                    right: 0,
+                    show: !1
+                },
+                xAxis: {
+                    min: 0,
+                    max: 1920,
+                    type: "value",
+                    show: !1
+                },
+                yAxis: {
+                    min: 0,
+                    max: 1080,
+                    type: "value",
+                    axisLine: {
+                        onZero: !1
+                    }, show: !1
+                },
+                series: i
+            };
+            e.setOption(n)
+        }
+    </script>
+</body>
+
+</html>
+
+

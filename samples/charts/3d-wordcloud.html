@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>基于D3实现的3D词云效果</title>
+
+    <script src="js/lib/d3.js"></script>
+    <style>
+        .svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        .container {
+            width: 600px;
+            height: 600px;
+            margin: 50px auto;
+            position: relative;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="wrapper" class="container">
+        <svg width="100%" height="100%" style="border:1px solid red"></svg>
+    </div>
+    <script>
+        var radius = 300,
+            fallLength = 500,
+            angleX = Math.PI / 500,
+            angleY = Math.PI / 500,
+            container = document.getElementById('wrapper'),
+            keys = ['.NET', 'Silverlight', 'jQuery', 'CSS3', 'HTML5', 'JavaScript', 'SQL', 'C#'];
+
+        var fill = d3.scale.category20(),
+            svg = d3.select("svg").append("g")
+        // .attr('transform', 'translate(300,200)');
+
+        // 初始化svg元素
+        function init() {
+            var words = this.initData(keys),
+                update = svg.selectAll('text').data(words),
+                enter = update.enter(),
+                exit = update.exit();
+
+            update.transition().duration(500).attr("transform", function (d) {
+                return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+            })
+
+            enter.append('text').style("border", "1px solid blue")
+                .style("font-family", "Impact")
+                .attr("text-anchor", "middle")
+                .style("fill", function (data, index) { return fill(index); })
+                .text(function (data) { return data.text; })
+                .transition().duration(500)
+
+            exit.transition().duration(500).attr('fill', 'white').remove();
+
+            this.updateState(update);
+            this.animate(update);
+        }
+
+        function initData(keys) {
+            var words = [],
+                texts = svg.selectAll('text'),
+                count = keys.length;
+
+            for (var i = 0, key; key = keys[i]; i++) {
+                var value = (2 * (i + 1) - 1) / count - 1,
+                    angel = Math.acos(value),
+                    angel1 = angel * Math.sqrt(count * Math.PI),
+                    x = radius * Math.sin(angel) * Math.cos(angel),
+                    y = radius * Math.sin(angel) * Math.sin(angel1),
+                    z = radius * Math.cos(angel);
+
+                var scale = fallLength / (fallLength - z),
+                    alpha = (z + radius) / (2 * radius);
+
+                word = {
+                    text: key,
+                    x: x + container.offsetWidth / 2,
+                    y: y + container.offsetHeight / 2,
+                    z: z,
+                    size: 15 * scale + 'px',
+                    opacity: alpha + 0.5,
+                    zIndex: parseInt(scale * 100)
+                };
+
+                words.push(word);
+            }
+            return words;
+        }
+        function rotateX(words) {
+            var cos = Math.cos(angleX);
+            var sin = Math.sin(angleX);
+            words.forEach(function () {
+                var y1 = this.y * cos - this.z * sin;
+                var z1 = this.z * cos + this.y * sin;
+                this.y = y1;
+                this.z = z1;
+            })
+
+        }
+        function rotateY(words) {
+            var cos = Math.cos(angleY);
+            var sin = Math.sin(angleY);
+            words.forEach(function () {
+                var x1 = this.x * cos - this.z * sin;
+                var z1 = this.z * cos + this.x * sin;
+                this.x = x1;
+                this.z = z1;
+            })
+        }
+        function updateState(update) {
+            var cos = Math.cos(angleX);
+            var sin = Math.sin(angleX);
+
+            update.style("font-size", function (data) {
+                return parseInt(data.size) + "px";
+            }).style("fill-opacity", function (data) {
+                return data.opacity;
+            })
+            // .transition().duration(500).attr("transform", function (data) {
+            //     var y1 = data.y * cos - data.z * sin;
+            //     var z1 = data.z * cos + data.y * sin;
+            //     data.y = y1;
+            //     data.z = z1;
+
+            //     var x1 = data.x * cos - data.z * sin;
+            //     var z1 = data.z * cos + data.x * sin;
+            //     data.x = x1;
+            //     data.z = z1;
+
+            //     var box = this.getBoundingClientRect();
+            //     return "translate(" + [data.x - box.width / 2, data.y - box.height / 2] + ")";
+            // })
+                .attr('x', function (data) {
+                    var box = this.getBoundingClientRect();
+                    return data.x - box.width / 2;
+                })
+                .attr('y', function (data) {
+                    var box = this.getBoundingClientRect();
+                    return data.y - box.height / 2;
+                });
+        }
+        function animate(update) {
+            setInterval(function () {
+                updateState(update);
+            }, 17)
+        }
+        function initData1() {
+            var words = [],
+                texts = svg.selectAll('text'),
+                count = texts.size();
+
+            for (var i = 0, text; text = texts[0][i]; i++) {
+                var value = (2 * (i + 1) - 1) / count - 1,
+                    angel = Math.acos(value),
+                    angel1 = angel * Math.sqrt(count * Math.PI),
+                    x = radius * Math.sin(angel) * Math.cos(angel),
+                    y = radius * Math.sin(angel) * Math.sin(angel1),
+                    z = radius * Math.cos(angel);
+
+                var box = text.getBoundingClientRect(),
+                    scale = fallLength / (fallLength - z),
+                    alpha = (z + radius) / (2 * radius);
+
+                word = {
+                    x: x + container.offsetWidth / 2 - box.width / 2,
+                    y: y + container.offsetHeight / 2 - box.height / 2,
+                    z: z,
+                    size: 15 * scale + 'px',
+                    opacity: alpha + 0.5,
+                    zIndex: parseInt(scale * 100)
+                };
+
+                words.push(word);
+            }
+            return words;
+        }
+        function run() {
+            this.init();
+            var tags = this.initData();
+            tags.forEach(function (e, i) {
+                e.move();
+            })
+            // setInterval(function () {
+            //     tags.forEach(function (i, e) {
+            //         e.move();
+            //     })
+            // }, 200);
+        }
+        this.init();
+    </script>
+    <!-- <svg width="600" height="400" style="border:1px solid red">
+        <g>
+            <text transform="translate(0,0)">dsds</text>
+            <text transform="translate(20,20)">dsds</text>
+            <text transform="translate(50,50)">dsds</text>
+            <text transform="translate(250,250)">dsds</text>
+        </g>
+        <rect x="30" y="30" width="120" height="90" rx="10" ry="10" fill="#a0b3d6" transform="translate(30 12)"></rect>
+    </svg> -->
+</body>
+
+</html>

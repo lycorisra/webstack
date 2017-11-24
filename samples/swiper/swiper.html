@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>页面滑屏效果</title>
+    <link rel="stylesheet" href="../../css/lib/animate.min.css" />
+    <link rel="stylesheet" href="../../css/lib/swiper-3.06.min.css" />
+    <link rel="stylesheet" href="../../css/base.css" />
+    <script type="text/javascript" src="../../js/lib/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="../../js/lib/swiper-3.06.min.js"></script>
+    <script type="text/javascript" src="../../js/lib/swiper.animate-1.0.2.min.js"></script>
+    <script type="text/javascript" src="../../js/tool.js"></script>
+
+    <style>
+        .container {
+            height: 100%;
+        }
+
+        .demo01 {
+            height: 100%;
+        }
+
+        .page {
+            position: relative;
+            height: 100%;
+            top: 9px;
+            background-color: green;
+        }
+        .demo01 .page:nth-child(1) {
+            background-color: #2d8cf0;
+        }
+        .demo01 .page:nth-child(2) {
+            background-color: #19be6b;
+        }
+        .demo01 .page:nth-child(3) {
+            background-color: #ff9900;
+        }
+        .demo01 .page:nth-child(4) {
+            background-color: #ed3f14;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h5>左右滑动</h5>
+        <div class="demo01">
+            <div class="page">第一屏</div>
+            <div class="page">第二屏</div>
+            <div class="page">第三屏</div>
+            <div class="page">第四屏</div>
+        </div>
+
+        <h5>上下滑动</h5>
+        <div class="demo02">
+            <div class="page">第一屏</div>
+            <div class="page">第二屏</div>
+            <div class="page">第三屏</div>
+            <div class="page">第四屏</div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $('.demo01').slide();
+    </script>
+</body>
+
+</html>

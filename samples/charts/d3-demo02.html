@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>d3图标示例</title>
+    <script src="js/lib/d3.js"></script>
+
+    <style type="text/css">
+        .axis path,
+        .axis line {
+            fill: none;
+            stroke: black;
+            shape-rendering: crispEdges;
+        }
+
+        .axis text {
+            font-family: sans-serif;
+            font-size: 11px;
+        }
+    </style>
+</head>
+
+<body>
+    <a style="display:block" href="javascript:void(0)" onclick="history.go(-1)">返回</a>
+    <script>
+        var height = 400,
+            xAxisWidth = 600,
+            yAxisWidth = 300,
+            rectStep = 35,
+            rectWidth = 30,
+            dataset = [50, 43, 120, 87, 99, 167, 142],
+            padding = { top: 20, left: 40, right: 20, bottom: 20 },
+            xScale = d3.scale.linear().domain([0, d3.max(dataset) + 20]).range([0, xAxisWidth]),
+            yScale = d3.scale.ordinal().domain(d3.range(dataset.length).reverse()).rangeRoundBands([0, yAxisWidth], 0.2),
+            svg = d3.select('body').append('svg').attr('width', 600).attr('height', height);
+
+        var defs = svg.append("defs");
+
+        var linearGradient = defs.append("linearGradient")
+            .attr("id", "linearColor")
+            .attr("x1", "0%")
+            .attr("y1", "0%")
+            .attr("x2", "100%")
+            .attr("y2", "0%");
+
+        var stop1 = linearGradient.append("stop")
+            .attr("offset", "0%")
+            .style("stop-color", '#fbc02d');
+
+        var stop2 = linearGradient.append("stop")
+            .attr("offset", "100%")
+            .style("stop-color", '#ef5350');
+
+        var rect = svg.selectAll('rect').data(dataset).enter().append('rect').style("fill", "url(#" + linearGradient.attr("id") + ")")
+            .attr('x', function (data, index) {
+                return padding.left;
+            })
+            .attr('y', function (data, index) {
+                // return yScale(index) + 10;
+                return height - (padding.bottom + yScale(index)) - yScale.rangeBand();
+            })
+            .attr('width', function (data, index) {
+                return xScale(data);
+            })
+            .attr('height', function (data, index) {
+                return yScale.rangeBand();
+            });
+
+        var text = svg.selectAll('text').data(dataset).enter().append('text').attr('fill', 'white').attr('text-size', '50px')
+            .attr('text-anchor', 'end').attr('x', function (data, index) {
+                return xScale(data) + padding.left;
+            })
+            .attr('y', function (data, index) {
+                return height - (padding.bottom + yScale(index)) - yScale.rangeBand() / 2;
+            })
+            .attr('dx', -10).attr('dy', yScale.rangeBand() / 5)
+            .text(function (d) { return d });
+
+        var xAxis = d3.svg.axis().scale(xScale).orient('bottom');
+        // yScale.range([yAxisWidth, 0]);
+
+        var yAxis = d3.svg.axis().scale(yScale).orient('left');
+
+        svg.append('g').attr('class', 'axis').attr('transform', 'translate(' + padding.left + ',' + (height - padding.bottom) + ')').call(xAxis);
+        svg.append('g').attr('class', 'axis').attr('transform', 'translate(' + padding.left + ',' + (height - padding.bottom - yAxisWidth) + ')').call(yAxis);
+    </script>
+</body>
+
+</html>

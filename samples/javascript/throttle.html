@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>javascript函数节流</title>
+</head>
+
+<body>
+    <script>
+        var n = 0;
+        function resizeHandler(args) {
+            console.log(++n, args);
+        }
+        function throttle(method, context, args) {
+            clearTimeout(method.tId);
+            method.tId = setTimeout(function () {
+                method.call(context, args);
+            }, 500)
+        }
+        window.onresize = function () {
+            // resizeHandler();
+            throttle(resizeHandler, window, 222);
+            // throttle(function () { resizeHandler(111); }, window);
+        }
+    </script>
+</body>
+
+</html>

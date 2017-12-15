@@ -1,10 +1,14 @@
 {
-    "name": "webpack-dev-server-demo",
-    "version": "1.0.0",
-    "scripts": {
-        "build": "webpack --config webpack.config.js"
-    },
-    "dependencies": {
-        "webpack": "^3.8.1"
-    }
+  "name": "webpack-dev-server-demo",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "webpack --config webpack.config.js"
+  },
+  "dependencies": {
+    "webpack": "^3.8.1"
+  },
+  "devDependencies": {
+    "ejs-loader": "^0.3.0",
+    "raw-loader": "^0.5.1"
+  }
 }

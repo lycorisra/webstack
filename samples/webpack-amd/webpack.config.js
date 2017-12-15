@@ -7,5 +7,12 @@ module.exports = {
         filename: '[name].js',
         // library: "index",
         // libraryTarget: 'amd'
-    }
+    },
+    resolveLoader: {
+        alias: { 
+            'text': 'raw-loader',  
+            'css':  'raw-loader'
+        }
+    },
+    devtool: 'source-map',
 };

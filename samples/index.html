@@ -26,11 +26,20 @@
         .tag:hover {
             border: 1px solid #666;
         }
+
+        .wave {
+            width: 20rem;
+            height: 7.5px;
+            background-size: 15px 15px;
+            background-repeat: repeat-x;
+            background-image: linear-gradient(135deg, transparent 45%, red 55%, transparent 60%), linear-gradient(45deg, transparent 45%, red 55%, transparent 60%)
+        }
     </style>
     <title>柱形图</title>
 </head>
 
 <body>
+    <div class="wave"></div>
     <div class="container">
         <dl>
             <dt>柱形图</dt>

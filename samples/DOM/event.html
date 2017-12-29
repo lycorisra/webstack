@@ -1,0 +1,60 @@
+<!DOCTYPE HTML>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Javascript</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #ccc;
+            font-size: 12px;
+            overflow: auto
+        }
+
+        .main {
+            width: 500px;
+            height: 330px;
+            position: relative;
+            margin: 250px auto 0;
+            background-color: #eee;
+        }
+
+        .box {
+            position: absolute;
+            width: 220px;
+            height: 180px;
+            background-color: orange;
+            top: 80px;
+            left: 80px;
+        }
+    </style>
+</head>
+
+<body style="height:1600px;">
+    <div class="main">
+        <div class="box" id="box"></div>
+    </div>
+
+    <script>  
+        var oBox = document.getElementById('box');
+
+        window.onload = function () {
+
+            oBox.onmousedown = function (event) {
+                event = event || window.event;
+
+                console.log('(offsetX, offsetY) ', event.offsetX, event.offsetY);
+                console.log('(clientX, clientY) ', event.clientX, event.clientY);
+                console.log('(pageX, pageY) ', event.pageX, event.pageY);
+                console.log('(screenX, screenY) ', event.screenX, event.screenY);
+                console.log('(layerX, layerY) ', event.layerX, event.layerY);
+                console.log('(x, y) ', event.x, event.y);
+            }
+        }
+
+    </script>
+</body>
+
+</html>

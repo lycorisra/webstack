@@ -30,22 +30,24 @@ SiriWave.prototype = {
     },
 
     _drawLine: function (attenuation, color, width) {
-        this.ctx.beginPath();
-        this.ctx.moveTo(0, 0);
+        // this.ctx.beginPath();
+        // this.ctx.moveTo(0, 0);
 
-        var ctx = this.ctx;
-        ctx.moveTo(0, 0);
-        ctx.bezierCurveTo(5,5,8,8,10,10);;
+        // var ctx = this.ctx;
+        // ctx.moveTo(20, 150);
+        // ctx.bezierCurveTo(50,250,300,100,600,50);
+        // ctx.bezierCurveTo(50,250,300,100,600,50);
+        // ctx.bezierCurveTo(650,100,800,100,1200,50);
 
         this.ctx.strokeStyle = color;
         this.ctx.lineWidth = width || 1;
-        // var x, y;
-        // for (var i = -this.K; i <= this.K; i += 0.5) {
-        //     x = this.width * ((i + this.K) / (this.K * 2));
-        //     y = this.height / 2 + this.noise * this._globalAttenuationFn(i) * (1 / attenuation) * Math.sin(this.F * i - this.phase);
-        //     this.ctx.lineTo(x, y);
-        //     console.log(x, y);
-        // }
+        var x, y;
+        for (var i = -this.K; i <= this.K; i += 0.5) {
+            x = this.width * ((i + this.K) / (this.K * 2));
+            y = this.height / 2 + this.noise * this._globalAttenuationFn(i) * (1 / attenuation) * Math.sin(this.F * i - this.phase);
+            this.ctx.lineTo(x, y);
+            console.log(x, y);
+        }
         this.ctx.stroke();
 
     },
@@ -62,12 +64,12 @@ SiriWave.prototype = {
         this.phase = (this.phase + this.speed) % (Math.PI * 64);
         this._clear();
         this._drawLine(-2, 'rgba(255,255,255,0.1)');
-        // this._drawLine(-6, 'rgba(255,255,255,0.2)');
-        // this._drawLine(4, 'rgba(255,255,255,0.4)');
-        // this._drawLine(2, 'rgba(255,255,255,0.6)');
-        // this._drawLine(1, 'rgba(255,255,255,1)', 1.5);
+        this._drawLine(-6, 'rgba(255,255,255,0.2)');
+        this._drawLine(4, 'rgba(255,255,255,0.4)');
+        this._drawLine(2, 'rgba(255,255,255,0.6)');
+        this._drawLine(1, 'rgba(255,255,255,1)', 1.5);
 
-        // requestAnimationFrame(this._draw.bind(this));
+        requestAnimationFrame(this._draw.bind(this));
     },
 
     start: function () {
@@ -97,11 +99,11 @@ SiriWave.prototype = {
 };
 
 var SW = new SiriWave({
-    width: 640,
-    height: 200
+    width: 1800,
+    height: 300
 });
 SW.setSpeed(0.1);
-// SW.setNoise(0.5);
+SW.setNoise(0.5);
 SW.start();
 
 var range = document.getElementById('range');
